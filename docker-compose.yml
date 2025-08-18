@@ -1,3 +1,5 @@
+
+
 services:
 
   postgres:
@@ -17,16 +19,6 @@ services:
       timeout: 5s
       retries: 5
 
-  cadastro-cliente:
-    build: ../cadastro-cliente
-    ports:
-      - "8082:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - empresa-net
-
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -36,7 +28,32 @@ services:
     networks:
       - empresa-net
 
+  cadastro-cliente:
+    build: .
+    container_name: cadastro-cliente
+    ports:
+      - "8082:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - empresa-net
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock # permite que Jenkins use Docker do host
+    networks:
+      - empresa-net
+
+volumes:
+  jenkins_home:
+
 networks:
   empresa-net:
     driver: bridge
-
