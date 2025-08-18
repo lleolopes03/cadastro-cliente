@@ -1,16 +1,15 @@
 pipeline {
-     docker {
-                image 'maven:3.8.5-openjdk-17'
-                args '-v /root/.m2:/root/.m2' // opcional: cache do Maven
-            }
+    agent {
+        docker {
+            image 'maven:3.8.5-openjdk-17'
+            args '-v /root/.m2:/root/.m2' // opcional: cache do Maven
         }
-
+    }
 
     environment {
         DOCKER_IMAGE = 'cadastro-cliente'
         DOCKER_TAG = 'latest'
     }
-
 
     stages {
         stage('Checkout') {
@@ -37,11 +36,12 @@ pipeline {
                 sh 'docker-compose up -d --build'
             }
         }
-         stage('Verificação') {
-                steps {
-                    echo '✅ Jenkins está lendo o Jenkinsfile corretamente!'
-                }
+
+        stage('Verificação') {
+            steps {
+                echo '✅ Jenkins está lendo o Jenkinsfile corretamente!'
             }
+        }
     }
 
     post {
