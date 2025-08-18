@@ -29,7 +29,7 @@ services:
       - empresa-net
 
   cadastro-cliente:
-    build: .
+    build: ../cadastro-cliente
     container_name: cadastro-cliente
     ports:
       - "8082:8080"
