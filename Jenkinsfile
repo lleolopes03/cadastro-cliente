@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+     docker {
+                image 'maven:3.8.5-openjdk-17'
+                args '-v /root/.m2:/root/.m2' // opcional: cache do Maven
+            }
+        }
+
 
     environment {
         DOCKER_IMAGE = 'cadastro-cliente'
