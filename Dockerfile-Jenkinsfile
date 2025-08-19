@@ -2,11 +2,11 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Instala Docker e Maven
+# Instala Docker CLI e Maven
 RUN apt-get update && \
     apt-get install -y docker.io maven && \
+    groupadd docker || true && \
+    usermod -aG docker jenkins && \
     apt-get clean
-
-RUN usermod -aG docker jenkins
 
 USER jenkins
