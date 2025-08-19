@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/lleolopes03/cadastro-cliente.git'
+                checkout scm
             }
         }
 
