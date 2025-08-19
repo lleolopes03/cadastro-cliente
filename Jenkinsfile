@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'cadastro-cliente'
+        DOCKER_IMAGE = 'cadastro-clientes'
         DOCKER_TAG = 'latest'
     }
 
