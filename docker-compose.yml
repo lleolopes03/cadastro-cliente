@@ -1,4 +1,4 @@
-
+version: '3.8'
 
 services:
 
@@ -29,7 +29,9 @@ services:
       - empresa-net
 
   cadastro-cliente:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: cadastro-cliente
     ports:
       - "8082:8080"
@@ -40,14 +42,16 @@ services:
       - empresa-net
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: .
+      dockerfile: Dockerfile-Jenkinsfile
     container_name: jenkins
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock # permite que Jenkins use Docker do host
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - empresa-net
 
