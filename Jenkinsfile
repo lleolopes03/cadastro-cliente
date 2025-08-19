@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/lleolopes03/cadastro-cliente.git'
             }
         }
 
@@ -19,15 +19,9 @@ pipeline {
             }
         }
 
-        stage('Verificar acesso ao Docker') {
-            steps {
-                sh 'docker version'
-            }
-        }
-
         stage('Docker Build') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
             }
         }
 
