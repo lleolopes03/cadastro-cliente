@@ -2,12 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HOST = 'tcp://host.docker.internal:2375'
         DOCKER_IMAGE = 'cadastro-cliente'
         DOCKER_TAG = 'latest'
     }
-
-
 
     stages {
         stage('Checkout') {
@@ -24,20 +21,28 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
+                sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
             }
         }
 
         stage('Deploy com Docker Compose') {
             steps {
-                sh 'docker-compose down'
-                sh 'docker-compose up -d --build'
+                timeout(time: 2, unit: 'MINUTES') {
+                    sh 'docker-compose up -d --no-deps --build cadastro-cliente'
+                }
             }
         }
 
         stage('Verificação') {
             steps {
-                echo '✅ Jenkins está lendo o Jenkinsfile corretamente!'
+                script {
+                    def healthCheck = sh(script: "curl -s http://localhost:8082/actuator/health | grep UP", returnStatus: true)
+                    if (healthCheck == 0) {
+                        echo '✅ Serviço cadastro-cliente está saudável!'
+                    } else {
+                        error('❌ Serviço cadastro-cliente não respondeu como esperado.')
+                    }
+                }
             }
         }
     }
