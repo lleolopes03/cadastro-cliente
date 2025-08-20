@@ -43,8 +43,8 @@ services:
 
   jenkins:
     build:
-      context: ./jenkins
-      dockerfile: Dockerfile-Jenkisfile
+      context: .
+      dockerfile: Dockerfile-Jenkinsfile
     ports:
       - "8080:8080"
       - "50000:50000"
