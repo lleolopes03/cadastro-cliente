@@ -2,9 +2,12 @@ pipeline {
     agent any
 
     environment {
+        DOCKER_HOST = 'tcp://host.docker.internal:2375'
         DOCKER_IMAGE = 'cadastro-cliente'
         DOCKER_TAG = 'latest'
     }
+
+
 
     stages {
         stage('Checkout') {
