@@ -42,9 +42,9 @@ services:
       - empresa-net
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk21
-    container_name: jenkins
-    privileged: true
+    build:
+      context: ./jenkins
+      dockerfile: Dockerfile-Jenkisfile
     ports:
       - "8080:8080"
       - "50000:50000"
