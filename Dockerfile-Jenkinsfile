@@ -2,9 +2,9 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Instala Maven e curl (Docker CLI não é necessário com DinD)
+# Instala Docker CLI, Maven e curl
 RUN apt-get update && \
-    apt-get install -y maven curl && \
+    apt-get install -y docker.io maven curl && \
     apt-get clean
 
 # Instala Docker Compose (v2.x)
