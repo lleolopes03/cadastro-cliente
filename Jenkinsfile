@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'cadastro-cliente'
         DOCKER_TAG = 'latest'
+        DOCKER_HOST = 'tcp://docker-dind:2375'
     }
 
     stages {

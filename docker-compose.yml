@@ -1,6 +1,30 @@
-
-
 services:
+
+  docker:
+    image: docker:dind
+    container_name: docker-dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    networks:
+      - empresa-net
+
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile-Jenkinsfile
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    environment:
+      DOCKER_HOST: tcp://docker-dind:2375
+    depends_on:
+      - docker
+    networks:
+      - empresa-net
 
   postgres:
     image: postgres:15
@@ -38,20 +62,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    networks:
-      - empresa-net
-
-  jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile-Jenkinsfile
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - //var/run/docker.sock:/var/run/docker.sock
-
     networks:
       - empresa-net
 
