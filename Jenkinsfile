@@ -37,11 +37,22 @@ pipeline {
         stage('Verificação') {
             steps {
                 script {
-                    def healthCheck = sh(script: "curl -s http://localhost:8082/actuator/health | grep UP", returnStatus: true)
-                    if (healthCheck == 0) {
-                        echo '✅ Serviço cadastro-cliente está saudável!'
-                    } else {
-                        error('❌ Serviço cadastro-cliente não respondeu como esperado.')
+                    def tentativas = 5
+                    def sucesso = false
+
+                    for (int i = 0; i < tentativas; i++) {
+                        def status = sh(script: "curl -s http://cadastro-cliente:8080/actuator/health | grep UP", returnStatus: true)
+                        if (status == 0) {
+                            echo "✅ Serviço está saudável!"
+                            sucesso = true
+                            break
+                        }
+                        echo "⏳ Tentativa ${i + 1} falhou, aguardando 5s..."
+                        sleep 5
+                    }
+
+                    if (!sucesso) {
+                        error("❌ Serviço cadastro-cliente não respondeu como esperado.")
                     }
                 }
             }
