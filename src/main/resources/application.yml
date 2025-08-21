@@ -31,7 +31,17 @@ spring:
   cloud:
     config:
       enabled: false
+server:
+  port: 8080
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
 logging:
   level:
     org.springframework.amqp: DEBUG
